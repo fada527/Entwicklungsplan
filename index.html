@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Odoo Partner Account Manager Entwicklungsplan-Tool</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Lato', sans-serif;
+        }
+        /* Odoo Branding Colors */
+        .odoo-purple { color: #714B67; }
+        .bg-odoo-purple { background-color: #714B67; }
+        .hover\:bg-odoo-purple-dark:hover { background-color: #5f3f56; }
+        .border-odoo-purple { border-color: #714B67; }
+        .ring-odoo-purple:focus { --tw-ring-color: #714B67; }
+        .text-odoo-purple { color: #714B67; }
+        
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            #planOutput, #planOutput * {
+                visibility: visible;
+            }
+            #planOutput {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+            }
+            .no-print {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+    <div class="container mx-auto p-4 sm:p-6 lg:p-8">
+        <header class="text-center mb-8 no-print">
+            <h1 class="text-3xl sm:text-4xl font-bold text-odoo-purple">Entwicklungsplan-Tool</h1>
+            <p class="mt-2 text-lg text-gray-600">Für Odoo Partner Account Manager</p>
+        </header>
+
+        <main class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Eingabeformular -->
+            <div class="lg:col-span-1 bg-white p-6 rounded-xl shadow-md border border-gray-200 no-print">
+                <form id="devPlanForm">
+                    <h2 class="text-2xl font-bold mb-6 border-b pb-3 text-gray-700">1. Daten eingeben</h2>
+                    
+                    <div class="mb-6">
+                        <label for="employeeName" class="block text-sm font-medium text-gray-700 mb-2">Name des PAM</label>
+                        <input type="text" id="employeeName" name="employeeName" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 ring-odoo-purple focus:border-odoo-purple transition" placeholder="z.B. Max Mustermann" required>
+                    </div>
+
+                    <div class="mb-6">
+                        <label for="hierarchyLevel" class="block text-sm font-medium text-gray-700 mb-2">Hierarchiestufe</label>
+                        <select id="hierarchyLevel" name="hierarchyLevel" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 ring-odoo-purple focus:border-odoo-purple transition bg-white">
+                            <option value="low">Low Enablement</option>
+                            <option value="high">High Enablement</option>
+                            <option value="key">Key Partner Manager</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <h3 class="text-lg font-bold text-gray-700 mb-4">2. Kompetenzen auswählen</h3>
+                        
+                        <h4 class="text-md font-semibold text-gray-600 mt-4 mb-2">Kernkompetenzen (PAM)</h4>
+                        <div class="space-y-3 pl-2">
+                            <div class="flex items-center">
+                                <input id="produktwissen" name="competencies" type="checkbox" value="produktwissen" class="h-5 w-5 text-odoo-purple focus:ring-odoo-purple border-gray-300 rounded">
+                                <label for="produktwissen" class="ml-3 text-sm text-gray-700">Odoo Produkt- & Lösungswissen</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input id="vertriebsEnablement" name="competencies" type="checkbox" value="vertriebsEnablement" class="h-5 w-5 text-odoo-purple focus:ring-odoo-purple border-gray-300 rounded">
+                                <label for="vertriebsEnablement" class="ml-3 text-sm text-gray-700">Partner-Vertriebs-Enablement</label>
+                            </div>
+                             <div class="flex items-center">
+                                <input id="partnermanagement" name="competencies" type="checkbox" value="partnermanagement" class="h-5 w-5 text-odoo-purple focus:ring-odoo-purple border-gray-300 rounded">
+                                <label for="partnermanagement" class="ml-3 text-sm text-gray-700">Partner Relationship Management</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input id="kommunikation" name="competencies" type="checkbox" value="kommunikation" class="h-5 w-5 text-odoo-purple focus:ring-odoo-purple border-gray-300 rounded">
+                                <label for="kommunikation" class="ml-3 text-sm text-gray-700">Kommunikation & Partner-Coaching</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input id="technischesVerstaendnis" name="competencies" type="checkbox" value="technischesVerstaendnis" class="h-5 w-5 text-odoo-purple focus:ring-odoo-purple border-gray-300 rounded">
+                                <label for="technischesVerstaendnis" class="ml-3 text-sm text-gray-700">Technisches Lösungsverständnis</label>
+                            </div>
+                        </div>
+
+                        <h4 class="text-md font-semibold text-gray-600 mt-6 mb-2">Strategische Kompetenzen</h4>
+                        <div class="space-y-3 pl-2">
+                             <div class="flex items-center">
+                                <input id="strategischesDenken" name="competencies" type="checkbox" value="strategischesDenken" class="h-5 w-5 text-odoo-purple focus:ring-odoo-purple border-gray-300 rounded">
+                                <label for="strategischesDenken" class="ml-3 text-sm text-gray-700">Strategische Partnerentwicklung</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input id="finanzwissen" name="competencies" type="checkbox" value="finanzwissen" class="h-5 w-5 text-odoo-purple focus:ring-odoo-purple border-gray-300 rounded">
+                                <label for="finanzwissen" class="ml-3 text-sm text-gray-700">Wirtschaftsverständnis</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input id="konfliktloesung" name="competencies" type="checkbox" value="konfliktloesung" class="h-5 w-5 text-odoo-purple focus:ring-odoo-purple border-gray-300 rounded">
+                                <label for="konfliktloesung" class="ml-3 text-sm text-gray-700">Konfliktlösung & Eskalationsmanagement</label>
+                            </div>
+                        </div>
+
+                        <h4 class="text-md font-semibold text-gray-600 mt-6 mb-2">Persönlichkeitsentwicklung</h4>
+                        <div class="space-y-3 pl-2">
+                             <div class="flex items-center">
+                                <input id="resilienz" name="competencies" type="checkbox" value="resilienz" class="h-5 w-5 text-odoo-purple focus:ring-odoo-purple border-gray-300 rounded">
+                                <label for="resilienz" class="ml-3 text-sm text-gray-700">Resilienz & Umgang mit Komplexität</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input id="proaktivitaet" name="competencies" type="checkbox" value="proaktivitaet" class="h-5 w-5 text-odoo-purple focus:ring-odoo-purple border-gray-300 rounded">
+                                <label for="proaktivitaet" class="ml-3 text-sm text-gray-700">Proaktivität & Ownership</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input id="lernbereitschaft" name="competencies" type="checkbox" value="lernbereitschaft" class="h-5 w-5 text-odoo-purple focus:ring-odoo-purple border-gray-300 rounded">
+                                <label for="lernbereitschaft" class="ml-3 text-sm text-gray-700">Lernagilität, Adaptivität & Annahme</label>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="mt-8">
+                        <button type="submit" class="w-full bg-odoo-purple text-white font-bold py-3 px-4 rounded-lg hover:bg-odoo-purple-dark focus:outline-none focus:ring-2 focus:ring-offset-2 ring-odoo-purple transition-transform transform hover:scale-105">
+                            Plan erstellen
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Ausgabe des Plans -->
+            <div id="planContainer" class="lg:col-span-2 hidden">
+                 <div id="planOutput" class="bg-white p-8 rounded-xl shadow-lg border border-gray-200">
+                    <!-- Inhalt wird per JS generiert -->
+                </div>
+                <div class="mt-6 text-center no-print">
+                     <button id="printButton" class="bg-gray-700 text-white font-bold py-2 px-6 rounded-lg hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
+                        Drucken / Als PDF speichern
+                    </button>
+                </div>
+            </div>
+        </main>
+        
+        <!-- Error Message -->
+        <div id="errorMessage" class="hidden mt-6 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg relative" role="alert">
+            <strong class="font-bold">Fehler:</strong>
+            <span class="block sm:inline">Bitte geben Sie einen Namen ein und wählen Sie mindestens eine Kompetenz aus.</span>
+        </div>
+
+    </div>
+
+    <script>
+        // Datenbank mit Entwicklungsmaßnahmen, zugeschnitten auf Odoo Partner Account Manager (PAM)
+        const devData = {
+            produktwissen: {
+                title: "Odoo Produkt- & Lösungswissen",
+                low: ["Absolvieren der Odoo E-Learning Kurse, Fokus auf Value Proposition jeder App.", "Teilnahme an Partner-Webinaren, um die Argumentation für Partner zu verstehen.", "Erstellen einer Demo, die typische Partner-Fragen beantwortet.", "Erreichen der 'Odoo Certified Functional Consultant - Foundation' Zertifizierung."],
+                high: ["Entwickeln von branchenspezifischen Demo-Kits für Partner.", "Coaching von Partner-Consultants bei der Vorbereitung ihrer ersten eigenen Demos.", "Fähigkeit, die Top 3 USPs von Odoo gegenüber jedem Wettbewerber zu artikulieren.", "Erreichen von mind. 2 'Advanced' Zertifizierungen in für Partner relevanten Bereichen."],
+                key: ["Durchführung von 'Train-the-Trainer'-Sessions für Partner.", "Erstellung von Battle Cards (Odoo vs. Wettbewerb) für das Partnernetzwerk.", "Agieren als Schnittstelle zwischen Partner-Feedback und Odoo Produkt-Management.", "Mentoring des gesamten Teams zu neuen Features und deren Verkaufspotenzial für Partner."]
+            },
+            vertriebsEnablement: {
+                title: "Partner-Vertriebs-Enablement",
+                low: ["Verstehen des Odoo-Verkaufsprozesses und wie Partner integriert werden.", "Begleitung von Senior PAMs bei Co-Selling-Aktivitäten und Pipeline-Reviews mit Partnern.", "Unterstützung bei der Organisation von Vertriebs-Schulungen für Partner.", "Lernen, wie man Partner-Leads im CRM qualifiziert und zuweist."],
+                high: ["Eigenständige Durchführung von Pipeline-Reviews mit Partnern zur Steigerung der Konversionsrate.", "Coaching von Partner-Vertriebsmitarbeitern bei der Bedarfsanalyse und Einwandbehandlung.", "Entwicklung von gemeinsamen Marketingkampagnen mit Partnern zur Lead-Generierung.", "Analyse der Vertriebs-KPIs von Partnern und Ableitung von Maßnahmen."],
+                key: ["Entwicklung und Skalierung von Vertriebs-Enablement-Programmen für das gesamte Partnernetzwerk.", "Aufbau und Pflege von Beziehungen zu den Vertriebsleitern der strategischen Partner.", "Unterstützung von Partnern bei der Erstellung ihres Odoo-bezogenen Go-to-Market-Plans.", "Durchführung von Workshops zur Optimierung der Vertriebsprozesse bei Schlüsselpartnern."]
+            },
+            partnermanagement: {
+                title: "Partner Relationship Management",
+                low: ["Einarbeitung in das Odoo Partnerprogramm (Stufen, Vorteile, Anforderungen).", "Regelmäßige Check-in-Calls mit zugewiesenen Partnern zur Pflege der Beziehung.", "Sicherstellung, dass Partner alle notwendigen Informationen und Ressourcen haben.", "Dokumentation aller Partner-Interaktionen im CRM (Odoo)."],
+                high: ["Eigenständige Durchführung von Quarterly Business Reviews (QBRs) mit Partnern.", "Entwicklung und Nachverfolgung von gemeinsamen Business-Plänen.", "Identifikation, Ansprache und Onboarding neuer Partner.", "Sicherstellung der Partnerzufriedenheit und -loyalität."],
+                key: ["Management der Beziehungen zu den strategisch wichtigsten (Key) Partnern.", "Entwicklung von strategischen Jahresplänen mit Key Partnern, inkl. C-Level-Abstimmung.", "Mentoring von Junior PAMs in Beziehungsmanagement und Partner-Kommunikation.", "Repräsentation von Odoo auf Partnertagen und Branchen-Events."]
+            },
+            kommunikation: {
+                title: "Kommunikation & Partner-Coaching",
+                low: ["Klar und präzise über das Partnerprogramm und dessen Vorteile kommunizieren.", "Aktives Zuhören in Partnergesprächen, um deren Bedürfnisse wirklich zu verstehen.", "Halten von kurzen, internen Präsentationen über die eigenen Partner.", "Professionelle schriftliche Kommunikation mit Partnern."],
+                high: ["Überzeugende Präsentation von neuen Odoo-Initiativen oder Produkt-Features vor Partnern.", "Moderation von Roundtables oder Workshops mit mehreren Partnern.", "Coaching von Partnern in Präsentations-Skills für Endkunden-Demos.", "Konstruktives Feedback an Partner geben (z.B. bezüglich ihrer Website oder Marketingmaterialien)."],
+                key: ["Präsentationen vor der Geschäftsführung von Schlüsselpartnern oder auf großen Partnerevents.", "Entwicklung der Kommunikationsstrategie für den Partnerkanal in der Region.", "Schwierige Botschaften überzeugend und diplomatisch an Partner vermitteln.", "Coaching des gesamten PAM-Teams in Kommunikations- und Coaching-Fähigkeiten."]
+            },
+            technischesVerstaendnis: {
+                title: "Technisches Lösungsverständnis",
+                low: ["Verstehen der Odoo-Architektur (Cloud/On-Premise/Odoo.sh) um Partner beraten zu können.", "Grundlegendes Verständnis von APIs, um Integrationsanfragen von Partnern einordnen zu können.", "Erklären können, was mit Odoo Studio möglich ist und wo Entwicklungsbedarf besteht."],
+                high: ["Technische Qualifizierung von komplexeren Kundenanforderungen zusammen mit dem Partner.", "Beratung von Partnern bei der Wahl der richtigen Hosting-Lösung für deren Kunden.", "Verständnis der typischen Herausforderungen bei Datenmigrationen, um Partner zu sensibilisieren."],
+                key: ["Führen von Architektur-Diskussionen mit den technischen Leitern der Partner.", "Bewertung der technischen Kompetenz potenzieller neuer Partner.", "Konzeptionelle Beratung bei komplexen Integrationsprojekten der Partner."]
+            },
+            strategischesDenken: {
+                title: "Strategische Partnerentwicklung",
+                low: ["Analyse des eigenen Partner-Portfolios (Umsatz, Potenzial, Zertifizierungen).", "Verstehen der regionalen Markt- und Wettbewerbssituation.", "Unterstützung bei der Erstellung von Business-Plänen für Partner."],
+                high: ["Entwicklung von Account-Plänen für die Top 5-10 Partner im eigenen Portfolio.", "Identifikation von 'White Spots' (fehlende Branchen/Regionen) und proaktive Partner-Akquise.", "Analyse von Partner-KPIs und Ableitung strategischer Handlungsempfehlungen."],
+                key: ["Entwicklung der regionalen Partnerstrategie in Abstimmung mit der Vertriebsleitung.", "Planung und Durchführung von strategischen Workshops mit der Führungsebene der Key Partner.", "Beitrag zur Weiterentwicklung des globalen Odoo-Partnerprogramms."]
+            },
+            finanzwissen: {
+                title: "Wirtschaftsverständnis",
+                low: ["Verstehen der Geschäftsmodelle von Odoo-Partnern (Lizenzen, Dienstleistungen, Support).", "Sichere Anwendung der Odoo-Preis- und Partnermodelle (Marge, Kick-back).", "Erstellung einfacher ROI-Argumentationen, um den Wert von Odoo für Partnerkunden aufzuzeigen."],
+                high: ["Analyse von Partner-Kennzahlen (GuV, KPIs) zur Identifikation von Wachstumspotenzialen.", "Führen von betriebswirtschaftlichen Gesprächen mit der Partnerebene auf Augenhöhe.", "Unterstützung von Partnern bei der Erstellung von profitablen Business Cases und Angeboten."],
+                key: ["Strategische Beratung von Partnern zur Optimierung ihres Geschäftsmodells (z.B. wiederkehrende Umsätze).", "Verhandlung von komplexen kommerziellen Rahmenbedingungen und Verträgen mit Schlüsselpartnern.", "Durchführung von Workshops zum Thema 'Wirtschaftlichkeit im Odoo-Partnergeschäft' für das PAM-Team und Partner."]
+            },
+            konfliktloesung: {
+                title: "Konfliktlösung & Eskalationsmanagement",
+                low: ["Erkennen von potenziellen Konflikten (z.B. Unzufriedenheit mit Support) und frühzeitiges Ansprechen.", "Anwendung von Deeskalationstechniken in Gesprächen.", "Kennen und Anwenden des internen Eskalationsprozesses."],
+                high: ["Mediation bei Konflikten zwischen Partner und Endkunde oder Partner und Odoo-Support.", "Eigenständige Lösungsfindung in den meisten Konfliktsituationen.", "Proaktive Entwicklung von Maßnahmen zur Vermeidung wiederkehrender Konflikte."],
+                key: ["Management von strategischen Konflikten mit Key Partnern.", "Entwicklung und Optimierung der Eskalationsprozesse für den Partnerkanal.", "Coaching von Kollegen in schwierigen Verhandlungen und Konfliktgesprächen."]
+            },
+            resilienz: {
+                title: "Resilienz & Umgang mit Komplexität",
+                low: ["Effektives Zeit- und Prioritätenmanagement im Umgang mit vielen Partneranfragen.", "Ruhiges und professionelles Reagieren auf erste Rückschläge oder kritisches Partner-Feedback.", "Regelmäßige Selbstreflexion zur Identifikation von Stressoren."],
+                high: ["Aufrechterhaltung von Fokus und positiver Einstellung auch bei Nichterreichen von Zielen.", "Management eines großen und diversen Partner-Portfolios ohne Qualitätsverlust.", "Fähigkeit, schnell zwischen strategischen Planungs- und operativen Umsetzungsaufgaben zu wechseln."],
+                key: ["Agieren als Stabilitätsanker und Vorbild für das Team in turbulenten Marktphasen.", "Proaktives Management von Komplexität durch die Schaffung von klaren Strukturen und Prozessen.", "Förderung einer Kultur, in der Fehler als Lernchancen gesehen werden."]
+            },
+            proaktivitaet: {
+                title: "Proaktivität & Ownership",
+                low: ["Eigenständige Suche nach Lösungen und Informationen, bevor um Hilfe gebeten wird.", "Regelmäßiges Einbringen von Ideen zur Verbesserung der Zusammenarbeit mit Partnern.", "Übernahme voller Verantwortung für das zugewiesene Partner-Set."],
+                high: ["Identifikation neuer Geschäftschancen (z.B. neue Branchen) und Entwicklung von Strategien dafür.", "Proaktiver Aufbau eines Netzwerks, das für die Partner von Wert ist.", "Initiierung von neuen Formaten für den Partneraustausch (z.B. Roundtables)."],
+                key: ["Antizipation von Marktveränderungen und proaktive Anpassung der Partnerstrategie.", "Anstoßen von strategischen, abteilungsübergreifenden Initiativen zum Wohle des Partnerkanals.", "Handeln als 'Unternehmer im Unternehmen' für den Erfolg des Partnergeschäfts."]
+            },
+            lernbereitschaft: {
+                title: "Lernagilität, Adaptivität & Annahme",
+                low: ["Feedback aktiv einholen, es als Geschenk annehmen und zur Weiterentwicklung nutzen.", "Annahme neuer Aufgaben als Lernchance, auch außerhalb der Komfortzone.", "Aktives Verfolgen von Odoo-Produktupdates und deren Relevanz für Partner annehmen und kommunizieren."],
+                high: ["Annahme von Veränderungen im Partnerprogramm oder in der Strategie und diese positiv an Partner vermitteln.", "Flexible Anpassung des eigenen Kommunikationsstils an unterschiedliche Partnertypen annehmen.", "Wissen und Best Practices im Team teilen und die Expertise anderer annehmen."],
+                key: ["Eine Kultur der Annahme und des kontinuierlichen Lernens im Team vorleben und fördern.", "Strategische Veränderungen annehmen und als Treiber für Innovationen im Partner-Management-Ansatz agieren.", "Die Verantwortung für die Anpassungsfähigkeit des gesamten Partnerkanals annehmen."]
+            }
+        };
+
+        const form = document.getElementById('devPlanForm');
+        const planContainer = document.getElementById('planContainer');
+        const planOutput = document.getElementById('planOutput');
+        const errorMessage = document.getElementById('errorMessage');
+        const printButton = document.getElementById('printButton');
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const employeeName = document.getElementById('employeeName').value;
+            const hierarchyLevel = document.getElementById('hierarchyLevel').value;
+            const selectedCompetencies = document.querySelectorAll('input[name="competencies"]:checked');
+            
+            if (!employeeName.trim() || selectedCompetencies.length === 0) {
+                errorMessage.classList.remove('hidden');
+                return;
+            }
+            errorMessage.classList.add('hidden');
+
+            generatePlan(employeeName, hierarchyLevel, selectedCompetencies);
+        });
+        
+        printButton.addEventListener('click', function() {
+            window.print();
+        });
+
+        function generatePlan(name, level, competencies) {
+            const levelMap = {
+                low: 'Low Enablement',
+                high: 'High Enablement',
+                key: 'Key Partner Manager'
+            };
+
+            let html = `
+                <div class="border-b-2 border-gray-200 pb-4 mb-6">
+                    <h2 class="text-3xl font-black text-gray-800">Entwicklungsplan für ${name}</h2>
+                    <p class="text-lg font-bold text-odoo-purple">${levelMap[level]}</p>
+                    <p class="text-sm text-gray-500">Erstellt am: ${new Date().toLocaleDateString('de-DE')}</p>
+                </div>
+                <div class="space-y-8">
+            `;
+
+            const competencyOrder = [
+                'produktwissen', 'vertriebsEnablement', 'partnermanagement', 'kommunikation', 'technischesVerstaendnis',
+                'strategischesDenken', 'finanzwissen', 'konfliktloesung',
+                'resilienz', 'proaktivitaet', 'lernbereitschaft'
+            ];
+            
+            const sortedCompetencies = Array.from(competencies).sort((a, b) => {
+                return competencyOrder.indexOf(a.value) - competencyOrder.indexOf(b.value);
+            });
+
+            sortedCompetencies.forEach(comp => {
+                const compData = devData[comp.value];
+                if (compData) {
+                    html += `
+                        <div>
+                            <h3 class="text-xl font-bold text-gray-700 mb-3 border-l-4 border-odoo-purple pl-3">${compData.title}</h3>
+                            <ul class="list-disc list-inside space-y-2 text-gray-700 pl-4">
+                    `;
+                    const actions = compData[level];
+                    actions.forEach(action => {
+                        html += `<li>${action}</li>`;
+                    });
+                    html += `
+                            </ul>
+                        </div>
+                    `;
+                }
+            });
+
+            html += `</div>
+                <div class="mt-12 pt-6 border-t border-dashed">
+                    <div class="grid grid-cols-2 gap-8">
+                        <div>
+                            <p class="text-sm text-gray-600 mb-6">Unterschrift Mitarbeiter</p>
+                            <div class="border-t border-gray-400"></div>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-600 mb-6">Unterschrift Vorgesetzter</p>
+                            <div class="border-t border-gray-400"></div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            planOutput.innerHTML = html;
+            planContainer.classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
